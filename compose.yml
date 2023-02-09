@@ -1,0 +1,7 @@
+services:
+  nevergrad4sf:
+    restart: always
+    build:
+      dockerfile: ./Dockerfile
+    container_name: nevergrad4sf
+    image: nevergrad4sf
