@@ -31,5 +31,6 @@ RUN make -j build ARCH=x86-64-bmi2
 WORKDIR /root/nevergrad4sf
 RUN cp /root/stockfish/src/stockfish .
 COPY run_nevergrad.sh .
+RUN chmod +x run_nevergrad.sh
 
 CMD sleep infinity
