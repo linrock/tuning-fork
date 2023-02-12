@@ -204,9 +204,10 @@ def ng4sf(
         result = evalpoints[ready_batch][1].result()
         stats = calc_stats(result)
 
-        target = -stats["pentanomial_los"]
-        optimizer.tell(x, target)
-        recommendation = var2int(**optimizer.provide_recommendation().kwargs)
+        # minimize the likelihood of failuer
+        loss = (100 - stats["pentanomial_los"]) / 100.0
+        optimizer.tell(x, loss)
+
         current_time = datetime.datetime.now()
         used_time = current_time - start_time
         evals_done = evalpoints_submitted - evalpoints_running
@@ -235,6 +236,7 @@ def ng4sf(
             shutil.move(restartFileName, restartFileName + ".bak")
         optimizer.dump(restartFileName)
 
+        recommendation = var2int(**optimizer.provide_recommendation().kwargs)
         if recommendation != previous_recommendation:
             ng_iter = ng_iter + 1
             print()
