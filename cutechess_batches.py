@@ -280,7 +280,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--stockfish",
         type=str,
-        default="./stockfish",
+        default="stockfish",
         help="Name of the stockfish binary to which options can be passed",
     )
     parser.add_argument(
@@ -292,13 +292,13 @@ if __name__ == "__main__":
     parser.add_argument(
         "--cutechess",
         type=str,
-        default="./cutechess-cli",
+        default="cutechess-cli",
         help="Name of the cutechess binary",
     )
     parser.add_argument(
         "--book",
         type=str,
-        default="./noob_3moves.epd",
+        default="./UHO_XXL_+0.90_+1.19.epd",
         help="opening book in epd or pgn fomat",
     )
     parser.add_argument(
