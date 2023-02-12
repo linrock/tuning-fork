@@ -108,13 +108,13 @@ def ng4sf(
     # get info from sf
     sf_params = get_sf_parameters(stockfish)
     print(
-        "About to optimize the following %d %s: %s"
+        "About to optimize the following %d %s:"
         % (
             len(sf_params),
             "parameter" if len(sf_params) == 1 else "parameters",
-            sf_params,
         )
     )
+    pprint(sf_params)
     print(flush=True)
 
     # our choice of making mpi_subbatches, i.e. mpi processes per batch (this could be tunable for performance?)
@@ -195,6 +195,7 @@ def ng4sf(
             time.sleep(0.1)
             for i in range(evaluation_concurrency):
                 if evalpoints[i][1].done():
+                    print(f'Worker {i+1} of {evaluation_concurrency} has completed a batch!')
                     ready_batch = i
                     evalpoints_running = evalpoints_running - 1
                     break
