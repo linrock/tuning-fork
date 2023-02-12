@@ -207,13 +207,16 @@ def ng4sf(
         used_time = current_time - start_time
         evals_done = evalpoints_submitted - evalpoints_running
 
-        print("evaluation  : %8d" % evals_done)
+        print(f"evaluation  : {evals_done}")
         print("   evaluated: ", var2int(**x.kwargs))
         print("   time used: %8.3f" % used_time.total_seconds())
         print(
             "   games/s  : %8.3f"
             % (batch.total_games * evals_done / used_time.total_seconds())
         )
+        print(f'   wld:             {stats["wld"]}')
+        print(f'   pentanomial:     {stats["pentanomial"]}')
+        print(f'   pentanomial_los: {stats["pentanomial_los"]}')
         print(
             "   score    : %8.3f +- %8.3f"
             % (stats["score"] * 100, stats["score_error"] * 100)

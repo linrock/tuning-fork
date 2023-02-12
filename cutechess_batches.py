@@ -29,8 +29,8 @@ def elo(score):
 
 def pentanomial_results(result_sequence):
     game_pair_results = []
-    for i in range(0, len(result) - 1, 2):
-        current, next = result[i], result[i + 1]
+    for i in range(0, len(result_sequence) - 1, 2):
+        current, next = result_sequence[i], result_sequence[i + 1]
         game_pair_results.append(str(current) + str(next))
     category = [0, 0, 0, 0, 0]
     for score in game_pair_results:
@@ -91,11 +91,11 @@ def calc_stats(result_sequence):
     return {
         "score": score,
         "score_error": 1.95716 * stddev,
+        "wld": wld,
         "pentanomial": pentanomial,
         "pentanomial_los": calc_los(pentanomial),
         "Elo": elo(score),
-        "Elo_error": (elo(score + 1.95716 * stddev) - elo(score - 1.95716 * stddev))
-        / 2,
+        "Elo_error": (elo(score + 1.95716 * stddev) - elo(score - 1.95716 * stddev)) / 2,
         "LOS": los,
     }
 
