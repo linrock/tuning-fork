@@ -178,6 +178,7 @@ def ng4sf(
     evalpoints_running = 0
     for i in range(evaluation_concurrency):
         x = optimizer.ask()
+        print(f'optimizer.ask() got params. running batch...')
         evalpoints.append([x, executor.submit(batch.run, var2int(*x.args, **x.kwargs))])
         time.sleep(0.1)  # try to give some time to submit all batches of this point
         evalpoints_submitted = evalpoints_submitted + 1
@@ -227,6 +228,7 @@ def ng4sf(
         print(f'   ldw LOS         : {stats["ldw_los"]:.3f}')
         print(f'   pentanomial     : {stats["pentanomial"]}')
         print(f'   pentanomial LOS : {stats["pentanomial_los"]:.3f}')
+        print()
 
         # make a backup of the old restart and dump current state
         if os.path.exists(restartFileName):
