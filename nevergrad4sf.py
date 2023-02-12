@@ -203,7 +203,9 @@ def ng4sf(
         result = evalpoints[ready_batch][1].result()
         stats = calc_stats(result)
 
-        optimizer.tell(x, -stats["score"])
+        target = -stats["pentanomial_los"]
+        print(f"optimizer.tell {target}")
+        optimizer.tell(x, target)
         recommendation = var2int(**optimizer.provide_recommendation().kwargs)
         current_time = datetime.datetime.now()
         used_time = current_time - start_time
