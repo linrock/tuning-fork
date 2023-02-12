@@ -204,7 +204,6 @@ def ng4sf(
         stats = calc_stats(result)
 
         target = -stats["pentanomial_los"]
-        print(f"optimizer.tell {target}")
         optimizer.tell(x, target)
         recommendation = var2int(**optimizer.provide_recommendation().kwargs)
         current_time = datetime.datetime.now()
@@ -212,6 +211,7 @@ def ng4sf(
         evals_done = evalpoints_submitted - evalpoints_running
 
         print(f"evaluation  : {evals_done}")
+        print(f"  optimizer.tell {target}")
         print("   evaluated: ", var2int(**x.kwargs))
         print("   time used: %8.3f" % used_time.total_seconds())
         print(
@@ -222,11 +222,11 @@ def ng4sf(
             "   score    : %8.3f +- %8.3f"
             % (stats["score"] * 100, stats["score_error"] * 100)
         )
-        print("   Elo      : %8.3f +- %8.3f" % (stats["Elo"], stats["Elo_error"]))
-        print("   LOS      : %8.3f" % (stats["LOS"]))
+        print(f'   Elo      : {stats["Elo"]:8.3f} +- {stats["Elo_error"]}')
+        print(f'   LOS      : {stats["LOS"].3f}')
         print(f'   wld:             {stats["wld"]}')
         print(f'   pentanomial:     {stats["pentanomial"]}')
-        print(f'   pentanomial_los: {stats["pentanomial_los"]}')
+        print(f'   pentanomial_los: {stats["pentanomial_los"]:.3f}')
 
         # make a backup of the old restart and dump current state
         if os.path.exists(restartFileName):
