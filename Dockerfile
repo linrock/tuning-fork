@@ -21,7 +21,7 @@ RUN git clone https://github.com/linrock/Stockfish.git /root/stockfish
 WORKDIR /root/stockfish
 RUN git checkout -t origin/spsa-tune-nnue-scale-opt
 WORKDIR /root/stockfish/src
-RUN make -j build ARCH=x86-64-bmi2
+RUN make -j profile-build ARCH=x86-64-bmi2
 
 WORKDIR /root
 RUN cp /root/stockfish/src/stockfish /usr/local/bin/
