@@ -216,15 +216,15 @@ def ng4sf(
             "   games/s  : %8.3f"
             % (batch.total_games * evals_done / used_time.total_seconds())
         )
-        print(f'   wld:             {stats["wld"]}')
-        print(f'   pentanomial:     {stats["pentanomial"]}')
-        print(f'   pentanomial_los: {stats["pentanomial_los"]}')
         print(
             "   score    : %8.3f +- %8.3f"
             % (stats["score"] * 100, stats["score_error"] * 100)
         )
         print("   Elo      : %8.3f +- %8.3f" % (stats["Elo"], stats["Elo_error"]))
-        print("   LOS      : %8.3f" % (100 * stats["LOS"]))
+        print("   LOS      : %8.3f" % (stats["LOS"]))
+        print(f'   wld:             {stats["wld"]}')
+        print(f'   pentanomial:     {stats["pentanomial"]}')
+        print(f'   pentanomial_los: {stats["pentanomial_los"]}')
 
         # make a backup of the old restart and dump current state
         if os.path.exists(restartFileName):
