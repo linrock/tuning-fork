@@ -24,7 +24,7 @@ WORKDIR /root/stockfish/src
 RUN make -j build ARCH=x86-64-bmi2
 
 WORKDIR /root
-RUN cp /root/stockfish/src/stockfish .
+RUN cp /root/stockfish/src/stockfish /usr/local/bin/
 
 COPY *.py run_nevergrad.sh .
 RUN chmod +x run_nevergrad.sh

@@ -148,25 +148,26 @@ class CutechessLocalBatch:
 
         lines.sort(key=lambda l: float(l.split()[2]))
 
-        score = []
+        # Convert cutechess-cli game results into a sequence of W/L/D from the test engine's perspective
+        result_sequence = []
         for line in lines:
             if line.find(": 1-0") != -1:
                 if line.find("test vs base") != -1:
-                    score.append("w")
+                    result_sequence.append("w")
                 if line.find("base vs test") != -1:
-                    score.append("l")
+                    result_sequence.append("l")
             elif line.find(": 0-1") != -1:
                 if line.find("test vs base") != -1:
-                    score.append("l")
+                    result_sequence.append("l")
                 if line.find("base vs test") != -1:
-                    score.append("w")
+                    result_sequence.append("w")
             elif line.find(": 1/2-1/2") != -1:
-                score.append("d")
+                result_sequence.append("d")
             else:
-                True
                 # ignore for now.
+                print("The game did not terminate properly!")
 
-        return score
+        return result_sequence
 
 
 class CutechessExecutorBatch:
