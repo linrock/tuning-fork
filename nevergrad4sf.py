@@ -204,7 +204,7 @@ def ng4sf(
         result = evalpoints[ready_batch][1].result()
         stats = calc_stats(result)
 
-        # minimize the likelihood of failuer
+        # minimize the likelihood of failure to maximize likelihood of success
         loss = (100 - stats["pentanomial_los"]) / 100.0
         optimizer.tell(x, loss)
 
@@ -213,22 +213,18 @@ def ng4sf(
         evals_done = evalpoints_submitted - evalpoints_running
 
         print(f"evaluation  : {evals_done}")
-        print(f"  optimizer.tell {target}")
-        print("   evaluated: ", var2int(**x.kwargs))
-        print("   time used: %8.3f" % used_time.total_seconds())
-        print(
-            "   games/s  : %8.3f"
+        print(f"   evaluated: ", var2int(**x.kwargs))
+        print(f"   time used    : %8.3f" % used_time.total_seconds())
+        print(f"   games/s      : %8.3f"
             % (batch.total_games * evals_done / used_time.total_seconds())
         )
-        print(
-            "   score    : %8.3f +- %8.3f"
+        print(f"   score        : %8.3f +- %8.3f"
             % (stats["score"] * 100, stats["score_error"] * 100)
         )
-        print(f'   Elo      : {stats["Elo"]:8.3f} +- {stats["Elo_error"]}')
-        print(f'   ldw             : {stats["ldw"]}')
-        print(f'   ldw LOS         : {stats["ldw_los"]:.3f}')
-        print(f'   pentanomial     : {stats["pentanomial"]}')
-        print(f'   pentanomial LOS : {stats["pentanomial_los"]:.3f}')
+        print(f'   Elo          : {stats["Elo"]:8.3f} +- {stats["Elo_error"]}')
+        print(f'   ldw          : {stats["ldw_los"]:.3f} LOS - {stats["ldw"]}')
+        print(f'   pentanomial  : {stats["pentanomial_los"]:.3f} LOS - {stats["pentanomial"]}')
+        print(f"   loss         : {loss}")
         print()
 
         # make a backup of the old restart and dump current state
