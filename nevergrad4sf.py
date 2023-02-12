@@ -236,6 +236,7 @@ def ng4sf(
         if recommendation != previous_recommendation:
             ng_iter = ng_iter + 1
             print()
+            print('-----')
             print(
                 "optimal at iter %d after %d %s and %d games : "
                 % (
@@ -246,6 +247,7 @@ def ng4sf(
                 )
             )
             pprint(recommendation)
+            print('-----')
             with open("optimal.json", "w") as outfile:
                 json.dump(recommendation, outfile)
 
