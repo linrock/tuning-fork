@@ -27,10 +27,30 @@ def elo(score):
     return -400.0 * math.log10(1.0 / score - 1.0)
 
 
-def calc_stats(result):
+def pentanomial(result_sequence):
+    game_pair_results = []
+    for i in range(0, len(result) - 1, 2):
+        current, next = result[i], result[i + 1]
+        game_pair_results.append(str(current) + str(next))
+    category = [0, 0, 0, 0, 0]
+    for score in game_pair_results:
+        if score == "ll":
+            category[0] = category[0] + 1
+        if score == "ld" or score == "dl":
+            category[1] = category[1] + 1
+        if score == "dd" or score == "wl" or score == "lw":
+            category[2] = category[2] + 1
+        if score == "wd" or score == "dw":
+            category[3] = category[3] + 1
+        if score == "ww":
+            category[4] = category[4] + 1
+    return category
+
+
+def calc_stats(result_sequence):
     """Given a list of "w" "l" "d", compute score, elo and LOS, with error estimates"""
     wld = [0, 0, 0]
-    for r in result:
+    for r in result_sequence:
         if r == "w":
             wld[0] += 1
         if r == "l":
@@ -54,6 +74,7 @@ def calc_stats(result):
     return {
         "score": score,
         "score_error": 1.95716 * stddev,
+        "pentanomial": pentanomial(result_sequence)
         "Elo": elo(score),
         "Elo_error": (elo(score + 1.95716 * stddev) - elo(score - 1.95716 * stddev))
         / 2,
