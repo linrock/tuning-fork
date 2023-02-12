@@ -224,7 +224,7 @@ def ng4sf(
         )
         print(f'   Elo      : {stats["Elo"]:8.3f} +- {stats["Elo_error"]}')
         print(f'   ldw             : {stats["ldw"]}')
-        print(f'   ldw LOS         : {stats["LOS"].3f}')
+        print(f'   ldw LOS         : {stats["ldw_los"]:.3f}')
         print(f'   pentanomial     : {stats["pentanomial"]}')
         print(f'   pentanomial LOS : {stats["pentanomial_los"]:.3f}')
 
