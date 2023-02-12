@@ -91,12 +91,12 @@ def calc_stats(result_sequence):
     return {
         "score": score,
         "score_error": 1.95716 * stddev,
-        "wld": wld,
+        "ldw": [wld[1], wld[2], wld[0]],
+        "ldw_los": 100 * los,
         "pentanomial": pentanomial,
         "pentanomial_los": 100 * calc_los(pentanomial),
         "Elo": elo(score),
         "Elo_error": (elo(score + 1.95716 * stddev) - elo(score - 1.95716 * stddev)) / 2,
-        "LOS": 100 * los,
     }
 
 
