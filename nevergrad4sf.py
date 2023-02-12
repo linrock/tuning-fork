@@ -15,9 +15,11 @@ import datetime
 import time
 import argparse
 import json
-import textwrap
-import nevergrad as ng
+from pprint import pprint
 from subprocess import Popen, PIPE
+import textwrap
+
+import nevergrad as ng
 from cutechess_batches import CutechessExecutorBatch, calc_stats
 from mpi4py import MPI
 from mpi4py.futures import MPIPoolExecutor
@@ -233,15 +235,15 @@ def ng4sf(
             ng_iter = ng_iter + 1
             print()
             print(
-                "optimal at iter %d after %d %s and %d games : %s"
+                "optimal at iter %d after %d %s and %d games : "
                 % (
                     ng_iter,
                     evals_done,
                     "evaluation" if evals_done == 1 else "evaluations",
                     batch.total_games * evals_done,
-                    str(recommendation),
                 )
             )
+            pprint(recommendation)
             with open("optimal.json", "w") as outfile:
                 json.dump(recommendation, outfile)
 
