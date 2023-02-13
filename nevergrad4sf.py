@@ -229,7 +229,7 @@ def ng4sf(
         )
         print(f'   Elo                   : {stats["Elo"]:8.3f} +- {stats["Elo_error"]}')
         print(f'   ldw                   : {stats["ldw"]}')
-        print(f'                           {stats["ldw_los"]:.2f}% LOS}')
+        print(f'                           {stats["ldw_los"]:.2f}% LOS')
         print(f'   pentanomial           : {stats["pentanomial"]}')
         print(f'                           {stats["pentanomial_los"]:.2f}% LOS')
         print("   SPRT LLR [u,l]        : {:.2f} {} [{:.2f},{:.2f}]".format(
