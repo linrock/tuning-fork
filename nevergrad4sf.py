@@ -228,13 +228,13 @@ def ng4sf(
             % (stats["score"] * 100, stats["score_error"] * 100)
         )
         print(f'   Elo                   : {stats["Elo"]:8.3f} +- {stats["Elo_error"]:8.3f}')
-        print(f'   ldw                   : {stats["ldw_los"]:8.2f}% LOS      {stats["ldw"]}')
-        print(f'   pentanomial           : {stats["pentanomial_los"]:8.2f}% LOS      {stats["pentanomial"]}')
-        print(f'   LLR [-2.94, 2.94]     : {a["LLR"]:8.2f}')
+        print(f'   ldw                   : {stats["ldw_los"]:7.2f}% LOS      {stats["ldw"]}')
+        print(f'   pentanomial           : {stats["pentanomial_los"]:7.2f}% LOS      {stats["pentanomial"]}')
+        print(f'   LLR [-2.94, 2.94]     : {a["LLR"]:7.2f}')
         # print("   Elo                   :   {:.2f}".format(a["elo"]))
         # print("   Confidence interval   :   [{:.2f},{:.2f}] (95%)".format(a["ci"][0], a["ci"][1]))
-        print(f'   LOS                   : {a["LOS"]:8.2%}')
-        print(f"   loss                  :   {loss}")
+        print(f'   LOS                   : {a["LOS"]:7.2%}')
+        print(f"   loss                  : {loss:7.6f}")
 
         # make a backup of the old restart and dump current state
         if os.path.exists(restartFileName):
