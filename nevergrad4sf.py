@@ -233,8 +233,8 @@ def ng4sf(
         print(f'   LLR [-2.94, 2.94]     : {a["LLR"]:7.2f}')
         # print("   Elo                   :   {:.2f}".format(a["elo"]))
         # print("   Confidence interval   :   [{:.2f},{:.2f}] (95%)".format(a["ci"][0], a["ci"][1]))
-        print(f'   LOS                   : {a["LOS"]:7.2%}')
-        print(f"   loss                  : {loss:7.6f}")
+        print(f'   LOS                   : {a["LOS"]:9.2%}')
+        print(f"   loss                  : {loss:11.6f}")
 
         # make a backup of the old restart and dump current state
         if os.path.exists(restartFileName):
