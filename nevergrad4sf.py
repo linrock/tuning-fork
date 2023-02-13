@@ -184,10 +184,12 @@ def ng4sf(
         evalpoints_submitted = evalpoints_submitted + 1
         evalpoints_running = evalpoints_running + 1
 
-    # optimizer loop
     ng_iter = 0
     previous_recommendation = None
     all_optimals = []
+    all_evalpoints = []
+
+    # optimizer loop
     while evalpoints_running > 0:
 
         # find the point which is ready
@@ -232,6 +234,12 @@ def ng4sf(
             shutil.move(restartFileName, restartFileName + ".bak")
         optimizer.dump(restartFileName)
 
+        # export data to json files after each evaluation
+        with open("all_evalpoints.json", "w") as outfile:
+            all_evalpoints.append({
+                'params': x.kwargs,
+                'stats': stats,
+            })
         recommendation = var2int(**optimizer.provide_recommendation().kwargs)
         if recommendation != previous_recommendation:
             ng_iter = ng_iter + 1
@@ -269,7 +277,7 @@ def ng4sf(
     print("Parameter optimization inputs:")
     print(sf_params)
     print(f"Optimization finished with optimal parameters (ng iteration: {ng_iter}) :")
-    pprint(result)
+    pprint(recommendation)
 
 
 if __name__ == "__main__":

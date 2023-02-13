@@ -346,11 +346,11 @@ if __name__ == "__main__":
         variables = json.load(infile)
 
     print(
-        "Starting evaluation (%d games, tc %s) with %d workers for the parameter set %s"
+        "Starting evaluation (%d games, tc %s) with %d workers for parameter set:"
         % (args.games_per_batch, args.tc, workers),
         flush=True,
     )
-    pprint(variables)
+    print(variables, flush=True)
 
     batch = CutechessExecutorBatch(
         cutechess=args.cutechess,
