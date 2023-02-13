@@ -30,6 +30,6 @@ RUN ln -s /root/stockfish/src/stockfish /usr/local/bin/
 WORKDIR /root
 COPY *.py *.sh .
 COPY stats stats
-RUN chmod +x run_nevergrad.sh
+RUN chmod +x *.sh
 
 CMD sleep infinity

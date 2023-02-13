@@ -2,6 +2,6 @@
 
 mpiexec -np 12 python3 \
   -m mpi4py.futures cutechess_batches.py \
-  -tc 10+0.1 \
-  -g 1000 \
+  -tc "10000+10000 nodes=5000" \
+  -g 10000 \
   -cc 4
