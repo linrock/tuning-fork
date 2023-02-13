@@ -100,7 +100,7 @@ def ng4sf(
     print("time control reference binary             : ", tcRef)
     print("restart                                   : ", do_restart)
     print("nevergrad batch evaluations               : ", nevergrad_evals)
-    print("batch size in games                       : ", games_per_batch)
+    print("initial batch size in games               : ", games_per_batch)
     print("cutechess concurrency                     : ", cutechess_concurrency)
     print("batch evaluation concurrency:             : ", evaluation_concurrency)
     print(flush=True)
@@ -218,7 +218,7 @@ def ng4sf(
         evals_done = evalpoints_submitted - evalpoints_running
         a = stats["fishtest_stats"]
 
-        print(f"evaluation: {evals_done} of {nevergrad_evals} (worker {ready_batch+1} of {evaluation_concurrency}) ng iter: {ng_iter}, time since start: {used_time.total_seconds():.3f}s, games/s: {total_games_run / used_time.total_seconds():.3f}")
+        print(f"evaluation: {evals_done} of {nevergrad_evals} (worker {ready_batch+1} of {evaluation_concurrency}, batch size: {batch.total_games}) ng iter: {ng_iter}, time since start: {used_time.total_seconds():.3f}s, games/s: {total_games_run / used_time.total_seconds():.3f}")
         print(var2int(**x.kwargs))
         print(f"   score                 : %8.3f +- %8.3f"
             % (stats["score"] * 100, stats["score_error"] * 100)
@@ -244,6 +244,7 @@ def ng4sf(
         recommendation = var2int(**optimizer.provide_recommendation().kwargs)
         if recommendation != previous_recommendation:
             ng_iter = ng_iter + 1
+
             all_optimals.append(recommendation)
             print()
             print(
@@ -261,6 +262,23 @@ def ng4sf(
                 json.dump(recommendation, outfile)
             with open("all_optimals.json", "w") as outfile:
                 json.dump(all_optimals, outfile)
+
+            # increase the batch size after each iteration beyond the first one
+            if ng_iter > 1:
+                games_per_batch += 64
+                print(f'Increased batch size to: {games_per_batch}')
+                batch = CutechessExecutorBatch(
+                    cutechess=cutechess,
+                    stockfish=stockfish,
+                    stockfishRef=stockfishRef,
+                    book=book,
+                    tc=tc,
+                    tcRef=tcRef,
+                    rounds=((games_per_batch + 1) // 2 + mpi_subbatches - 1) // mpi_subbatches,
+                    concurrency=cutechess_concurrency,
+                    batches=mpi_subbatches,
+                    executor=MPIPoolExecutor(),
+                )
 
         # queue the next point for evaluation.
         if evalpoints_submitted < nevergrad_evals:
