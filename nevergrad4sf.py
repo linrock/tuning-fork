@@ -187,6 +187,7 @@ def ng4sf(
     # optimizer loop
     ng_iter = 0
     previous_recommendation = None
+    all_optimals = []
     while evalpoints_running > 0:
 
         # find the point which is ready
@@ -243,6 +244,7 @@ def ng4sf(
         recommendation = var2int(**optimizer.provide_recommendation().kwargs)
         if recommendation != previous_recommendation:
             ng_iter = ng_iter + 1
+            all_optimals.append(recommendation)
             print()
             print(
                 "------ optimal at iter %d after %d %s and %d games : "
@@ -257,6 +259,8 @@ def ng4sf(
             print('-----')
             with open("optimal.json", "w") as outfile:
                 json.dump(recommendation, outfile)
+            with open("all_optimals.json", "w") as outfile:
+                json.dump(all_optimals, outfile)
 
         # queue the next point for evaluation.
         if evalpoints_submitted < nevergrad_evals:
