@@ -220,9 +220,7 @@ def ng4sf(
 
         print(f"evaluation: {evals_done} of {nevergrad_evals} (worker {ready_batch+1} of {evaluation_concurrency}, games played: {batch.total_games}) ng iter: {ng_iter}, time since start: {used_time.total_seconds():.3f}s, games/s: {total_games_played / used_time.total_seconds():.3f}")
         print(var2int(**x.kwargs))
-        print(f"   score                 : %8.3f +- %8.3f"
-            % (stats["score"] * 100, stats["score_error"] * 100)
-        )
+        print(f'   score                 : {stats["score"] * 100:8.3f} +- {stats["score_error"] * 100:8.3f}')
         print(f'   Elo                   : {stats["Elo"]:8.3f} +- {stats["Elo_error"]:8.3f}')
         print(f'   ldw                   :   {str(stats["ldw"]):20}   {stats["ldw_los"]:4.2f}% LOS')
         print(f'   pentanomial           :   {str(stats["pentanomial"]):20}   {stats["pentanomial_los"]:4.2f}% LOS')
