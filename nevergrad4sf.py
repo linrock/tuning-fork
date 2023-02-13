@@ -185,6 +185,7 @@ def ng4sf(
         evalpoints_running = evalpoints_running + 1
 
     ng_iter = 0
+    eval_of_last_ng_iter = 0
     previous_recommendation = None
     total_games_played = 0
     all_optimals = []
@@ -241,6 +242,8 @@ def ng4sf(
 
         recommendation = var2int(**optimizer.provide_recommendation().kwargs)
         if recommendation != previous_recommendation:
+            print(f"Spent {evals_done - eval_of_last_ng_iter} evaluations for this ng iteration")
+            eval_of_last_ng_iter = evals_done
             ng_iter = ng_iter + 1
 
             all_optimals.append(recommendation)
