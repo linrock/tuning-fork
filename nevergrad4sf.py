@@ -227,18 +227,16 @@ def ng4sf(
         print(f"   score                 : %8.3f +- %8.3f"
             % (stats["score"] * 100, stats["score_error"] * 100)
         )
-        print(f'   Elo                   : {stats["Elo"]:8.3f} +- {stats["Elo_error"]}')
-        print(f'   ldw                   : {stats["ldw"]}')
-        print(f'                           {stats["ldw_los"]:.2f}% LOS')
-        print(f'   pentanomial           : {stats["pentanomial"]}')
-        print(f'                           {stats["pentanomial_los"]:.2f}% LOS')
-        print("   SPRT LLR [u,l]        : {:.2f} {} [{:.2f},{:.2f}]".format(
+        print(f'   Elo                   : {stats["Elo"]:8.3f} +- {stats["Elo_error"]:8.3f}')
+        print(f'   ldw                   :   {stats["ldw_los"]:.2f}% LOS      {stats["ldw"]}')
+        print(f'   pentanomial           :   {stats["pentanomial_los"]:.2f}% LOS      {stats["pentanomial"]}')
+        print("   SPRT LLR [u,l]        :   {:.2f} {} [{:.2f},{:.2f}]".format(
             a["LLR"], "(clamped)" if a["clamped"] else "", a["a"], a["b"]
         ))
-        print("   Elo                   : {:.2f}".format(a["elo"]))
-        print("   Confidence interval   : [{:.2f},{:.2f}] (95%)".format(a["ci"][0], a["ci"][1]))
-        print(f'   LOS                   : {a["LOS"]:4.2%}')
-        print(f"   loss                  : {loss}")
+        # print("   Elo                   :   {:.2f}".format(a["elo"]))
+        # print("   Confidence interval   :   [{:.2f},{:.2f}] (95%)".format(a["ci"][0], a["ci"][1]))
+        print(f'   LOS                   :   {a["LOS"]:4.2%}')
+        print(f"   loss                  :   {loss}")
         print()
 
         # make a backup of the old restart and dump current state
