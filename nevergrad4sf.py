@@ -228,14 +228,12 @@ def ng4sf(
             % (stats["score"] * 100, stats["score_error"] * 100)
         )
         print(f'   Elo                   : {stats["Elo"]:8.3f} +- {stats["Elo_error"]:8.3f}')
-        print(f'   ldw                   :   {stats["ldw_los"]:.2f}% LOS      {stats["ldw"]}')
-        print(f'   pentanomial           :   {stats["pentanomial_los"]:.2f}% LOS      {stats["pentanomial"]}')
-        print("   SPRT LLR [u,l]        :   {:.2f} {} [{:.2f},{:.2f}]".format(
-            a["LLR"], "(clamped)" if a["clamped"] else "", a["a"], a["b"]
-        ))
+        print(f'   ldw                   : {stats["ldw_los"]:8.2f}% LOS      {stats["ldw"]}')
+        print(f'   pentanomial           : {stats["pentanomial_los"]:8.2f}% LOS      {stats["pentanomial"]}')
+        print(f'   LLR [-2.94, 2.94]     : {a["LLR"]:8.2f}')
         # print("   Elo                   :   {:.2f}".format(a["elo"]))
         # print("   Confidence interval   :   [{:.2f},{:.2f}] (95%)".format(a["ci"][0], a["ci"][1]))
-        print(f'   LOS                   :   {a["LOS"]:4.2%}')
+        print(f'   LOS                   : {a["LOS"]:8.2%}')
         print(f"   loss                  :   {loss}")
         print()
 
