@@ -275,7 +275,8 @@ def ng4sf(
         print(flush=True)
         previous_recommendation = recommendation
 
-    return recommendation
+    print("Optimization finished with optimal parameters: ")
+    pprint(result)
 
 
 if __name__ == "__main__":
@@ -367,7 +368,7 @@ if __name__ == "__main__":
     )
     args = parser.parse_args()
 
-    result = ng4sf(
+    ng4sf(
         args.stockfish,
         args.stockfishRef if args.stockfishRef else args.stockfish,
         args.cutechess,
@@ -380,4 +381,3 @@ if __name__ == "__main__":
         args.cutechess_concurrency,
         args.evaluation_concurrency,
     )
-    print("Optimization finished with optimal parameters: ", result)
