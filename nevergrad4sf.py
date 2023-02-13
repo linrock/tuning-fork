@@ -275,7 +275,9 @@ def ng4sf(
         print(flush=True)
         previous_recommendation = recommendation
 
-    print("Optimization finished with optimal parameters: ")
+    print("Parameter optimization inputs:")
+    print(sf_params)
+    print(f"Optimization finished with optimal parameters (ng iteration: {ng_iter}) :")
     pprint(result)
 
 
