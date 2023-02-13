@@ -235,11 +235,10 @@ def ng4sf(
         optimizer.dump(restartFileName)
 
         # export data to json files after each evaluation
+        all_evalpoints.append({ 'params': x.kwargs, 'stats': stats })
         with open("all_evalpoints.json", "w") as outfile:
-            all_evalpoints.append({
-                'params': x.kwargs,
-                'stats': stats,
-            })
+            json.dump(all_evalpoints, outfile)
+
         recommendation = var2int(**optimizer.provide_recommendation().kwargs)
         if recommendation != previous_recommendation:
             ng_iter = ng_iter + 1
