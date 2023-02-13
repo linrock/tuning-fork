@@ -14,6 +14,7 @@ import random
 import re
 import json
 import argparse
+from pprint import pprint
 import textwrap
 
 from mpi4py.futures import MPIPoolExecutor
@@ -346,9 +347,10 @@ if __name__ == "__main__":
 
     print(
         "Starting evaluation (%d games, tc %s) with %d workers for the parameter set %s"
-        % (args.games_per_batch, args.tc, workers, str(variables)),
+        % (args.games_per_batch, args.tc, workers),
         flush=True,
     )
+    pprint(variables)
 
     batch = CutechessExecutorBatch(
         cutechess=args.cutechess,
@@ -363,4 +365,4 @@ if __name__ == "__main__":
         executor=MPIPoolExecutor(),
     )
     results = batch.run(variables)
-    print(calc_stats(results))
+    pprint(calc_stats(results))
