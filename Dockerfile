@@ -25,10 +25,9 @@ WORKDIR /root/stockfish
 RUN git checkout -t origin/spsa-tune-nnue-scale-opt
 WORKDIR /root/stockfish/src
 RUN make -j profile-build ARCH=x86-64-bmi2
+RUN ln -s /root/stockfish/src/stockfish /usr/local/bin/
 
 WORKDIR /root
-RUN cp /root/stockfish/src/stockfish /usr/local/bin/
-
 COPY *.py *.sh .
 COPY stats stats
 RUN chmod +x run_nevergrad.sh
