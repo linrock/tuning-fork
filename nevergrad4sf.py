@@ -219,11 +219,11 @@ def ng4sf(
         a = stats["fishtest_stats"]
 
         print(f"evaluation  : {evals_done} of {nevergrad_evals}")
+        print(var2int(**x.kwargs))
         print(f"   time since start      : %8.3f" % used_time.total_seconds())
         print(f"   games/s               : %8.3f"
             % (batch.total_games * evals_done / used_time.total_seconds())
         )
-        print(var2int(**x.kwargs))
         print(f"   score                 : %8.3f +- %8.3f"
             % (stats["score"] * 100, stats["score_error"] * 100)
         )
@@ -235,7 +235,6 @@ def ng4sf(
         # print("   Confidence interval   :   [{:.2f},{:.2f}] (95%)".format(a["ci"][0], a["ci"][1]))
         print(f'   LOS                   : {a["LOS"]:8.2%}')
         print(f"   loss                  :   {loss}")
-        print()
 
         # make a backup of the old restart and dump current state
         if os.path.exists(restartFileName):
@@ -246,9 +245,8 @@ def ng4sf(
         if recommendation != previous_recommendation:
             ng_iter = ng_iter + 1
             print()
-            print('-----')
             print(
-                "optimal at iter %d after %d %s and %d games : "
+                "------ optimal at iter %d after %d %s and %d games : "
                 % (
                     ng_iter,
                     evals_done,
