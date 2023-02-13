@@ -30,7 +30,7 @@ def elo(score):
     return -400.0 * math.log10(1.0 / score - 1.0)
 
 
-def pentanomial_results(result_sequence: list) -> Tuple[int, int, int, int, int]:
+def pentanomial_results(result_sequence):
     game_pair_results = []
     for i in range(0, len(result_sequence) - 1, 2):
         current, next = result_sequence[i], result_sequence[i + 1]

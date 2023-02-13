@@ -4,8 +4,8 @@ import argparse
 import math
 
 import scipy.optimize
-import LLRcalc
-from brownian import Brownian
+from stats import LLRcalc
+from stats.brownian import Brownian
 
 
 class sprt:
