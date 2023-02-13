@@ -196,7 +196,6 @@ def ng4sf(
             time.sleep(0.1)
             for i in range(evaluation_concurrency):
                 if evalpoints[i][1].done():
-                    print(f'Worker {i+1} of {evaluation_concurrency} has completed a batch!')
                     ready_batch = i
                     evalpoints_running = evalpoints_running - 1
                     break
@@ -206,12 +205,8 @@ def ng4sf(
         result = evalpoints[ready_batch][1].result()
         stats = calc_stats(result)
 
-        # minimize the likelihood of failure to maximize likelihood of success
-        # loss = (100 - stats["pentanomial_los"]) / 100.0z
-
-        # maximize LLR measured from pentanomial results
-        loss = -stats["fishtest_stats"]["LLR"]
-
+        # loss = (100 - stats["pentanomial_los"]) / 100.0   # minimize the likelihood of failure to maximize likelihood of success
+        loss = -stats["fishtest_stats"]["LLR"]              # maximize LLR measured from pentanomial results
         optimizer.tell(x, loss)
 
         current_time = datetime.datetime.now()
@@ -219,12 +214,12 @@ def ng4sf(
         evals_done = evalpoints_submitted - evalpoints_running
         a = stats["fishtest_stats"]
 
-        print(f"evaluation  : {evals_done} of {nevergrad_evals}")
-        print(var2int(**x.kwargs))
-        print(f"   time since start      : %8.3f" % used_time.total_seconds())
-        print(f"   games/s               : %8.3f"
+        print(f"evaluation        : {evals_done} of {nevergrad_evals}, by worker {ready_batch+1} of {evaluation_concurrency")
+        print(f"time since start  : %8.3f" % used_time.total_seconds())
+        print(f"games/s           : %8.3f"
             % (batch.total_games * evals_done / used_time.total_seconds())
         )
+        print(var2int(**x.kwargs))
         print(f"   score                 : %8.3f +- %8.3f"
             % (stats["score"] * 100, stats["score_error"] * 100)
         )
