@@ -1,4 +1,5 @@
 numpy<1.24.0
+scipy
 matplotlib
 mpi4py==3.0.3
 nevergrad==0.4.0
