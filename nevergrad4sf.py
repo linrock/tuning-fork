@@ -230,11 +230,13 @@ def ng4sf(
         print(f'   Elo                   : {stats["Elo"]:8.3f} +- {stats["Elo_error"]}')
         print(f'   ldw                   : {stats["ldw_los"]:.3f} LOS - {stats["ldw"]}')
         print(f'   pentanomial           : {stats["pentanomial_los"]:.3f} LOS - {stats["pentanomial"]}')
+        print("SPRT")
         print("   LLR [u,l]              : {:.2f} {} [{:.2f},{:.2f}]".format(
             a["LLR"], "(clamped)" if a["clamped"] else "", a["a"], a["b"]
         ))
         print("   Elo                    :  {:.2f}".format(a["elo"]))
         print("   Confidence interval    :  [{:.2f},{:.2f}] (95%)".format(a["ci"][0], a["ci"][1]))
+        print(f'   LOS                    :  {a["LOS"]:4.2%}')
         print(f"   loss                   : {loss}")
         print()
 
