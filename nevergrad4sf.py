@@ -186,6 +186,7 @@ def ng4sf(
 
     ng_iter = 0
     previous_recommendation = None
+    total_games_run = 0
     all_optimals = []
     all_evalpoints = []
 
@@ -200,6 +201,7 @@ def ng4sf(
                 if evalpoints[i][1].done():
                     ready_batch = i
                     evalpoints_running = evalpoints_running - 1
+                    total_games_run += batch.total_games
                     break
 
         # use this point to inform the optimizer.
@@ -216,7 +218,7 @@ def ng4sf(
         evals_done = evalpoints_submitted - evalpoints_running
         a = stats["fishtest_stats"]
 
-        print(f"evaluation: {evals_done} of {nevergrad_evals} (worker {ready_batch+1} of {evaluation_concurrency}) ng iter: {ng_iter}, time since start: {used_time.total_seconds():.3f}s, games/s: {batch.total_games * evals_done / used_time.total_seconds():.3f}")
+        print(f"evaluation: {evals_done} of {nevergrad_evals} (worker {ready_batch+1} of {evaluation_concurrency}) ng iter: {ng_iter}, time since start: {used_time.total_seconds():.3f}s, games/s: {total_games_run / used_time.total_seconds():.3f}")
         print(var2int(**x.kwargs))
         print(f"   score                 : %8.3f +- %8.3f"
             % (stats["score"] * 100, stats["score_error"] * 100)
@@ -250,7 +252,7 @@ def ng4sf(
                     ng_iter,
                     evals_done,
                     "evaluation" if evals_done == 1 else "evaluations",
-                    batch.total_games * evals_done,
+                    total_games_run,
                 )
             )
             pprint(recommendation)
