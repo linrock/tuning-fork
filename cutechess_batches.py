@@ -6,8 +6,8 @@ calls cutechess with reasonable arguments and parses the output.
 The more interesting version, cutechess_executor_batch, runs multiple
 batches asynchronously, using an executor (which can be MPIPoolExecutor).
 """
+from concurrent.futures import as_completed
 from subprocess import Popen, PIPE
-from scipy.stats import norm
 import sys
 import math
 import random
@@ -15,9 +15,12 @@ import re
 import json
 import argparse
 import textwrap
+
 from mpi4py.futures import MPIPoolExecutor
 from mpi4py import MPI
-from concurrent.futures import as_completed
+from scipy.stats import norm
+
+from stats.sprt import sprt
 
 
 def elo(score):
@@ -27,7 +30,7 @@ def elo(score):
     return -400.0 * math.log10(1.0 / score - 1.0)
 
 
-def pentanomial_results(result_sequence):
+def pentanomial_results(result_sequence: list) -> Tuple[int, int, int, int, int]:
     game_pair_results = []
     for i in range(0, len(result_sequence) - 1, 2):
         current, next = result_sequence[i], result_sequence[i + 1]
@@ -87,6 +90,8 @@ def calc_stats(result_sequence):
     los = norm.cdf(a)
 
     pentanomial = pentanomial_results(result_sequence)
+    fishtest_stats = sprt(alpha=0.05, beta=0.05, elo0=0, elo1=2.0, elo_model='normalized')
+    fishtest_stats.set_state(pentanomial)
 
     return {
         "score": score,
@@ -97,6 +102,7 @@ def calc_stats(result_sequence):
         "pentanomial_los": 100 * calc_los(pentanomial),
         "Elo": elo(score),
         "Elo_error": (elo(score + 1.95716 * stddev) - elo(score - 1.95716 * stddev)) / 2,
+        "fishtest_stats": fishtest_stats.analytics(p=0.05)
     }
 
 
