@@ -5,3 +5,5 @@ services:
       dockerfile: ./Dockerfile
     container_name: nevergrad4sf
     image: nevergrad4sf
+    volumes:
+      - /dev/shm:/dev/shm
