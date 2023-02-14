@@ -69,6 +69,7 @@ def ng4sf(
     nevergrad_evals,
     do_restart,
     games_per_batch,
+    batch_increase_per_iter,
     cutechess_concurrency,
     evaluation_concurrency,
 ):
@@ -101,6 +102,7 @@ def ng4sf(
     print("restart                                   : ", do_restart)
     print("nevergrad batch evaluations               : ", nevergrad_evals)
     print("initial batch size in games               : ", games_per_batch)
+    print("batch size increase per ng iteration      : ", batch_increase_per_iter)
     print("cutechess concurrency                     : ", cutechess_concurrency)
     print("batch evaluation concurrency:             : ", evaluation_concurrency)
     print(flush=True)
@@ -266,7 +268,7 @@ def ng4sf(
 
             # increase the batch size after each iteration beyond the first one
             if ng_iter > 1:
-                games_per_batch += 64
+                games_per_batch += batch_increase_per_iter
                 print(f'Increased batch size to: {games_per_batch}')
                 batch = CutechessExecutorBatch(
                     cutechess=cutechess,
@@ -360,8 +362,15 @@ if __name__ == "__main__":
         "-g",
         "--games_per_batch",
         type=int,
-        default=20000,
+        default=256,
         help="Number of games per evaluation point",
+    )
+    parser.add_argument(
+        "-b",
+        "--batch_increase_per_iter",
+        type=int,
+        default=64,
+        help="Increase in number of games per evaluation after each nevergrad iteration",
     )
     parser.add_argument(
         "-cc",
@@ -399,6 +408,7 @@ if __name__ == "__main__":
         args.ng_evals,
         args.restart,
         args.games_per_batch,
+        args.batch_increase_per_iter,
         args.cutechess_concurrency,
         args.evaluation_concurrency,
     )
