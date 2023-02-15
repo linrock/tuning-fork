@@ -218,14 +218,14 @@ def ng4sf(
         params_evaluated_key = str(params_evaluated)
 
         # accumulate games from the same point so SPRT LLR can give better data
+        combined_game_results = wld_game_results.copy()
         if games_accumulator.get(params_evaluated_key):
             prev_game_results = games_accumulator[params_evaluated_key]
             print(f'Found previous evaluation of same point. Adding {len(prev_game_results)} game results')
-            wld_game_results += prev_game_results
-        games_accumulator[params_evaluated_key] = wld_game_results
+            combined_game_results.extend(prev_game_results)
+        games_accumulator[params_evaluated_key] = combined_game_results.copy()
 
-        stats = calc_stats(wld_game_results)
-
+        stats = calc_stats(combined_game_results)
         # loss = (100 - stats["pentanomial_los"]) / 100.0
         loss = -stats["fishtest_stats"]["LLR"]              # maximize SPRT LLR measured from pentanomial results
         optimizer.tell(x, loss)
@@ -237,7 +237,7 @@ def ng4sf(
 
         print(f"evaluation: {evals_done} of {nevergrad_evals} (worker {ready_batch+1} of {evaluation_concurrency}, games played: {num_games_played}) ng iter: {ng_iter}, {total_games_played} games played in {used_time.total_seconds():.3f}s, games/s: {total_games_played / used_time.total_seconds():.3f}")
         print(params_evaluated)
-        print(f'   num games             :   {len(wld_game_results)}')
+        print(f'   games considered      :   {len(combined_game_results)}')
         print(f'   score                 : {stats["score"] * 100:8.3f} +- {stats["score_error"] * 100:8.3f}')
         print(f'   elo                   : {stats["Elo"]:8.3f} +- {stats["Elo_error"]:8.3f}')
         print(f'   ldw                   :   {str(stats["ldw"]):24}   {stats["ldw_los"]:4.2f}% LOS')
@@ -255,7 +255,7 @@ def ng4sf(
         # export data to json files after each evaluation
         all_evalpoints.append({
             'params': x.kwargs,
-            'num_games': len(wld_game_results),
+            'num_games': num_games_played,
             'stats': stats
         })
         with open("all_evalpoints.json", "w") as outfile:
