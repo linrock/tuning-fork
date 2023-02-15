@@ -1,9 +1,9 @@
 services:
-  nevergrad4sf:
+  tuning-fork:
     restart: always
     build:
       dockerfile: ./Dockerfile
-    container_name: nevergrad4sf
-    image: nevergrad4sf
+    container_name: tuning-fork
+    image: tuning-fork
     volumes:
       - /dev/shm:/dev/shm
