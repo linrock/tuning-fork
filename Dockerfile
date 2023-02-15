@@ -2,7 +2,7 @@ FROM ubuntu:20.04
 
 RUN apt update --fix-missing
 RUN DEBIAN_FRONTEND=noninteractive TZ=Etc/UTC \
-  apt install -y vim git wget curl unzip python3 python3-pip mpich
+  apt install -y vim git tig wget curl unzip jq python3 python3-pip mpich
 
 WORKDIR /tmp
 RUN wget https://github.com/official-stockfish/books/raw/master/cutechess-cli-linux-64bit.zip

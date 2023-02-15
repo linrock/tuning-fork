@@ -210,14 +210,17 @@ def ng4sf(
 
         # use this point to inform the optimizer.
         x = evalpoints[ready_batch][0]
-        params_evaluated = var2int(**x.kwargs)
         wld_game_results = evalpoints[ready_batch][1].result()
 
+        params_evaluated = var2int(**x.kwargs)
+        params_evaluated = {key: params_evaluated[key] for key in sorted(params_evaluated)}
+        params_evaluated_key = str(params_evaluated)
+
         # accumulate games from the same point so SPRT LLR can give better data
-        if games_accumulator.get(params_evaluated):
+        if games_accumulator.get(params_evaluated_key):
             print('Found previous evaluation of same point. Appending game results')
             wld_game_results += games_accumulator[params_evaluated]
-        games_accumulator[params_evaluated] = wld_game_results
+        games_accumulator[params_evaluated_key] = wld_game_results
 
         stats = calc_stats(wld_game_results)
 
