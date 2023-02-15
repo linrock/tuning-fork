@@ -220,7 +220,7 @@ def ng4sf(
         # accumulate games from the same point so SPRT LLR can give better data
         if games_accumulator.get(params_evaluated_key):
             prev_game_results = games_accumulator[params_evaluated_key]
-            print('Found previous evaluation of same point. Appending {len(prev_game_results)} game results')
+            print(f'Found previous evaluation of same point. Adding {len(prev_game_results)} game results')
             wld_game_results += prev_game_results
         games_accumulator[params_evaluated_key] = wld_game_results
 
