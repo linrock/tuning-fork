@@ -235,7 +235,7 @@ def ng4sf(
         evals_done = evalpoints_submitted - evalpoints_running
         a = stats["fishtest_stats"]
 
-        print(f"evaluation: {evals_done} of {nevergrad_evals} (worker {ready_batch+1} of {evaluation_concurrency}, games played: {num_games_played}) ng iter: {ng_iter}, {total_games_played} games played in {used_time.total_seconds():.3f}s, games/s: {total_games_played / used_time.total_seconds():.3f}")
+        print(f"evaluation: {evals_done} of {nevergrad_evals} (worker {ready_batch+1} of {evaluation_concurrency}, games played: {num_games_played}) ng iter: {ng_iter}, total: {total_games_played} games in {used_time.total_seconds():.3f}s, games/s: {total_games_played / used_time.total_seconds():.3f}")
         print(params_evaluated)
         print(f'   games considered      :   {len(combined_game_results)}')
         print(f'   score                 : {stats["score"] * 100:8.3f} +- {stats["score_error"] * 100:8.3f}')
