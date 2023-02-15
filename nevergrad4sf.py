@@ -275,7 +275,7 @@ def ng4sf(
             pprint(recommendation)
             print('-----')
 
-            # export data to json files
+            # export optimal recommendations data to json files
             all_optimals.append({
                 "evals_done": evals_done,
                 "recommendation": recommendation
@@ -285,10 +285,10 @@ def ng4sf(
             with open("optimal.json", "w") as outfile:
                 json.dump(recommendation, outfile)
 
-            # increase the batch size after each iteration beyond the first one
+            # increase the games per batch after each iteration beyond the first one
             if ng_iter > 1:
                 games_per_batch += batch_increase_per_iter
-                print(f'Increased batch size to: {games_per_batch}')
+                print(f'Increased games per batch by {batch_increase_per_iter} to: {games_per_batch}')
                 batch = CutechessExecutorBatch(
                     cutechess=cutechess,
                     stockfish=stockfish,
