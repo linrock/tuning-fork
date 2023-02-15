@@ -215,14 +215,14 @@ def ng4sf(
 
         # accumulate games from the same point so SPRT LLR can give better data
         if games_accumulator.get(params_evaluated):
-            print('Found previous evaluation of same point. Appending data')
+            print('Found previous evaluation of same point. Appending game results')
             wld_game_results += games_accumulator[params_evaluated]
         games_accumulator[params_evaluated] = wld_game_results
 
         stats = calc_stats(wld_game_results)
 
-        # loss = (100 - stats["pentanomial_los"]) / 100.0   # minimize the likelihood of failure to maximize likelihood of success
-        loss = -stats["fishtest_stats"]["LLR"]              # maximize LLR measured from pentanomial results
+        # loss = (100 - stats["pentanomial_los"]) / 100.0
+        loss = -stats["fishtest_stats"]["LLR"]              # maximize SPRT LLR measured from pentanomial results
         optimizer.tell(x, loss)
 
         current_time = datetime.datetime.now()
@@ -254,12 +254,11 @@ def ng4sf(
 
         recommendation = var2int(**optimizer.provide_recommendation().kwargs)
         if recommendation != previous_recommendation:
+            print()
             print(f"Spent {evals_done - eval_of_last_ng_iter} evaluations for this ng iteration")
             eval_of_last_ng_iter = evals_done
             ng_iter = ng_iter + 1
 
-            all_optimals.append(recommendation)
-            print()
             print(
                 "------ optimal at iter %d after %d %s and %d games : "
                 % (
@@ -271,8 +270,13 @@ def ng4sf(
             )
             pprint(recommendation)
             print('-----')
+
             with open("optimal.json", "w") as outfile:
                 json.dump(recommendation, outfile)
+            all_optimals.append({
+                "evals_done": evals_done,
+                "recommendation": recommendation
+            })
             with open("all_optimals.json", "w") as outfile:
                 json.dump(all_optimals, outfile)
 
