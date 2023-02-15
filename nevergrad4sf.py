@@ -205,12 +205,13 @@ def ng4sf(
                 if evalpoints[i][1].done():
                     ready_batch = i
                     evalpoints_running = evalpoints_running - 1
-                    total_games_played += batch.total_games
                     break
 
         # use this point to inform the optimizer.
         x = evalpoints[ready_batch][0]
         wld_game_results = evalpoints[ready_batch][1].result()
+        num_games_played = len(wld_game_results)
+        total_games_played += num_games_played
 
         params_evaluated = var2int(**x.kwargs)
         params_evaluated = {key: params_evaluated[key] for key in sorted(params_evaluated)}
@@ -234,11 +235,11 @@ def ng4sf(
         evals_done = evalpoints_submitted - evalpoints_running
         a = stats["fishtest_stats"]
 
-        print(f"evaluation: {evals_done} of {nevergrad_evals} (worker {ready_batch+1} of {evaluation_concurrency}, games played: {batch.total_games}) ng iter: {ng_iter}, time since start: {used_time.total_seconds():.3f}s, games/s: {total_games_played / used_time.total_seconds():.3f}")
+        print(f"evaluation: {evals_done} of {nevergrad_evals} (worker {ready_batch+1} of {evaluation_concurrency}, games played: {num_games_played}) ng iter: {ng_iter}, time since start: {used_time.total_seconds():.3f}s, games/s: {total_games_played / used_time.total_seconds():.3f}")
         print(params_evaluated)
         print(f'   num games             :   {len(wld_game_results)}')
         print(f'   score                 : {stats["score"] * 100:8.3f} +- {stats["score_error"] * 100:8.3f}')
-        print(f'   Elo                   : {stats["Elo"]:8.3f} +- {stats["Elo_error"]:8.3f}')
+        print(f'   elo                   : {stats["Elo"]:8.3f} +- {stats["Elo_error"]:8.3f}')
         print(f'   ldw                   :   {str(stats["ldw"]):24}   {stats["ldw_los"]:4.2f}% LOS')
         print(f'   pentanomial           :   {str(stats["pentanomial"]):24}   {stats["pentanomial_los"]:4.2f}% LOS')
         print(f'   LLR [-2.94, 2.94]     : {a["LLR"]:7.2f}                      {a["LOS"]:4.2%} LOS')
@@ -262,11 +263,10 @@ def ng4sf(
 
         recommendation = var2int(**optimizer.provide_recommendation().kwargs)
         if recommendation != previous_recommendation:
-            print()
-            print(f"Spent {evals_done - eval_of_last_ng_iter} evaluations for this ng iteration")
             eval_of_last_ng_iter = evals_done
             ng_iter = ng_iter + 1
 
+            print()
             print(
                 "------ optimal at iter %d after %d %s and %d games : "
                 % (
@@ -278,6 +278,8 @@ def ng4sf(
             )
             pprint(recommendation)
             print('-----')
+            print()
+            print(f"Spent {evals_done - eval_of_last_ng_iter} evaluations for this ng iteration")
 
             # export optimal recommendations data to json files
             all_optimals.append({
@@ -288,6 +290,7 @@ def ng4sf(
                 json.dump(all_optimals, outfile)
             with open("optimal.json", "w") as outfile:
                 json.dump(recommendation, outfile)
+
 
             # increase the games per batch after each iteration beyond the first one
             if ng_iter > 1:
