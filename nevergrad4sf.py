@@ -248,7 +248,11 @@ def ng4sf(
         optimizer.dump(restartFileName)
 
         # export data to json files after each evaluation
-        all_evalpoints.append({ 'params': x.kwargs, 'stats': stats })
+        all_evalpoints.append({
+            'params': x.kwargs,
+            'num_games': len(wld_game_results),
+            'stats': stats
+        })
         with open("all_evalpoints.json", "w") as outfile:
             json.dump(all_evalpoints, outfile)
 
@@ -271,14 +275,15 @@ def ng4sf(
             pprint(recommendation)
             print('-----')
 
-            with open("optimal.json", "w") as outfile:
-                json.dump(recommendation, outfile)
+            # export data to json files
             all_optimals.append({
                 "evals_done": evals_done,
                 "recommendation": recommendation
             })
             with open("all_optimals.json", "w") as outfile:
                 json.dump(all_optimals, outfile)
+            with open("optimal.json", "w") as outfile:
+                json.dump(recommendation, outfile)
 
             # increase the batch size after each iteration beyond the first one
             if ng_iter > 1:
