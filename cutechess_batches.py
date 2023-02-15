@@ -243,9 +243,9 @@ class CutechessExecutorBatch:
         self.executor = executor
 
     def run(self, variables):
-        """Run a batch of games returning a list  containing 'w' 'l' 'd' results
+        """Run a batch of games returning a list containing 'w' 'l' 'd' results
 
-        The results are show from the point of view of test, which is the version that is
+        The results are shown from the point of view of test, which is the version that is
         setup using the options set using the variables.
         """
         score = []

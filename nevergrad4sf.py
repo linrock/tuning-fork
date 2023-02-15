@@ -192,6 +192,7 @@ def ng4sf(
     total_games_played = 0
     all_optimals = []
     all_evalpoints = []
+    games_accumulator = {}
 
     # optimizer loop
     while evalpoints_running > 0:
@@ -209,8 +210,16 @@ def ng4sf(
 
         # use this point to inform the optimizer.
         x = evalpoints[ready_batch][0]
-        result = evalpoints[ready_batch][1].result()
-        stats = calc_stats(result)
+        params_evaluated = var2int(**x.kwargs)
+        wld_game_results = evalpoints[ready_batch][1].result()
+
+        # accumulate games from the same point so SPRT LLR can give better data
+        if games_accumulator.get(params_evaluated):
+            print('Found previous evaluation of same point. Appending data')
+            wld_game_results += games_accumulator[params_evaluated]
+        games_accumulator[params_evaluated] = wld_game_results
+
+        stats = calc_stats(wld_game_results)
 
         # loss = (100 - stats["pentanomial_los"]) / 100.0   # minimize the likelihood of failure to maximize likelihood of success
         loss = -stats["fishtest_stats"]["LLR"]              # maximize LLR measured from pentanomial results
@@ -222,7 +231,8 @@ def ng4sf(
         a = stats["fishtest_stats"]
 
         print(f"evaluation: {evals_done} of {nevergrad_evals} (worker {ready_batch+1} of {evaluation_concurrency}, games played: {batch.total_games}) ng iter: {ng_iter}, time since start: {used_time.total_seconds():.3f}s, games/s: {total_games_played / used_time.total_seconds():.3f}")
-        print(var2int(**x.kwargs))
+        print(params_evaluated)
+        print(f'   num games             : {len(wld_game_results)}')
         print(f'   score                 : {stats["score"] * 100:8.3f} +- {stats["score_error"] * 100:8.3f}')
         print(f'   Elo                   : {stats["Elo"]:8.3f} +- {stats["Elo_error"]:8.3f}')
         print(f'   ldw                   :   {str(stats["ldw"]):24}   {stats["ldw_los"]:4.2f}% LOS')
