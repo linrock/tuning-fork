@@ -128,24 +128,26 @@ def ng4sf(
     )
 
     # creating the batch
-    batch = CutechessExecutorBatch(
-        cutechess=cutechess,
-        stockfish=stockfish,
-        stockfishRef=stockfishRef,
-        book=book,
-        tc=tc,
-        tcRef=tcRef,
-        rounds=((games_per_batch + 1) // 2 + mpi_subbatches - 1) // mpi_subbatches,
-        concurrency=cutechess_concurrency,
-        batches=mpi_subbatches,
-        executor=MPIPoolExecutor(),
-    )
+    def create_cutechess_executor_batch(games_per_batch):
+        return CutechessExecutorBatch(
+            cutechess=cutechess,
+            stockfish=stockfish,
+            stockfishRef=stockfishRef,
+            book=book,
+            tc=tc,
+            tcRef=tcRef,
+            rounds=((games_per_batch + 1) // 2 + mpi_subbatches - 1) // mpi_subbatches,
+            concurrency=cutechess_concurrency,
+            batches=mpi_subbatches,
+            executor=MPIPoolExecutor(),
+        )
+
+    batch = create_cutechess_executor_batch(games_per_batch)
 
     # paths for experiment output files
     if output_dir:
         Path(output_dir).mkdir(parents=True, exist_ok=True)
-    restartFileName = "ng_restart.pkl"
-    restart_file_path = Path(output_dir, restartFileName)
+    restart_file_path = Path(output_dir, "ng_restart.pkl")
     all_evalpoints_file_path = Path(output_dir, "all_evalpoints.json")
     all_optimals_file_path = Path(output_dir, "all_optimals.json")
     last_optimal_file_path = Path(output_dir, "optimal.json")
@@ -305,19 +307,8 @@ def ng4sf(
             # increase the games per batch after each iteration beyond the first one
             if ng_iter > 1 and batch_increase_per_iter > 0:
                 games_per_batch += batch_increase_per_iter
-                print(f'Increased games per batch by {batch_increase_per_iter} to: {games_per_batch}')
-                batch = CutechessExecutorBatch(
-                    cutechess=cutechess,
-                    stockfish=stockfish,
-                    stockfishRef=stockfishRef,
-                    book=book,
-                    tc=tc,
-                    tcRef=tcRef,
-                    rounds=((games_per_batch + 1) // 2 + mpi_subbatches - 1) // mpi_subbatches,
-                    concurrency=cutechess_concurrency,
-                    batches=mpi_subbatches,
-                    executor=MPIPoolExecutor(),
-                )
+                print(f'Increasing games per batch by {batch_increase_per_iter} to: {games_per_batch}')
+                batch = create_cutechess_executor_batch(games_per_batch)
 
         # queue the next point for evaluation.
         if evalpoints_submitted < nevergrad_evals:
