@@ -15,6 +15,7 @@ import datetime
 import time
 import argparse
 import json
+from pathlib import Path
 from pprint import pprint
 from subprocess import Popen, PIPE
 import textwrap
@@ -72,6 +73,7 @@ def ng4sf(
     batch_increase_per_iter,
     cutechess_concurrency,
     evaluation_concurrency,
+    output_dir,
 ):
     """
     nevergrad for sf: optimize parameters in a tuning enabled stockfish.
@@ -105,6 +107,7 @@ def ng4sf(
     print("batch size increase per ng iteration      : ", batch_increase_per_iter)
     print("cutechess concurrency                     : ", cutechess_concurrency)
     print("batch evaluation concurrency:             : ", evaluation_concurrency)
+    print("output dir:                               : ", output_dir)
     print(flush=True)
 
     # get info from sf
@@ -137,7 +140,12 @@ def ng4sf(
         batches=mpi_subbatches,
         executor=MPIPoolExecutor(),
     )
+
+    # paths for experiment output files
+    if output_dir:
+        Path(output_dir).mkdir(parents=True, exist_ok=True)
     restartFileName = "ng_restart.pkl"
+    restart_file_path = Path(output_dir, restartFileName)
 
     # Create a dictionary describing to nevergrad the variables of our black box function
     variables = {}
@@ -166,10 +174,10 @@ def ng4sf(
             num_workers=evaluation_concurrency,
         )
     else:
-        if os.path.isfile(restartFileName):
-            optimizer = ng.optimizers.TBPSA.load(restartFileName)
+        if os.path.isfile(restart_file_path):
+            optimizer = ng.optimizers.TBPSA.load(restart_file_path)
         else:
-            sys.exit("Missing restart file: %s\n" % restartFileName)
+            sys.exit(f"Missing restart file: {restart_file_path}\n")
 
     start_time = datetime.datetime.now()
 
@@ -248,9 +256,9 @@ def ng4sf(
         print(f"   loss                  : {loss:11.6f}")
 
         # make a backup of the old restart and dump current state
-        if os.path.exists(restartFileName):
-            shutil.move(restartFileName, restartFileName + ".bak")
-        optimizer.dump(restartFileName)
+        if os.path.exists(restart_file_path):
+            shutil.move(restart_file_path, restart_file_path + ".bak")
+        optimizer.dump(restart_file_path)
 
         # export data to json files after each evaluation
         all_evalpoints.append({
@@ -384,6 +392,12 @@ if __name__ == "__main__":
         help="time control of the reference stockfish, defaults to the --tc argument.",
     )
     parser.add_argument(
+        "--output_dir",
+        type=str,
+        default="",
+        help="Directory for output experiment data files",
+    )
+    parser.add_argument(
         "-g",
         "--games_per_batch",
         type=int,
@@ -436,4 +450,5 @@ if __name__ == "__main__":
         args.batch_increase_per_iter,
         args.cutechess_concurrency,
         args.evaluation_concurrency,
+        args.output_dir,
     )
