@@ -34,19 +34,19 @@ def elo(score):
 def pentanomial_results(result_sequence):
     game_pair_results = []
     for i in range(0, len(result_sequence) - 1, 2):
-        current, next = result_sequence[i], result_sequence[i + 1]
-        game_pair_results.append(str(current) + str(next))
+        game_one, game_two = result_sequence[i], result_sequence[i + 1]
+        game_pair_results.append(str(game_one) + str(game_two))
     category = [0, 0, 0, 0, 0]
-    for score in game_pair_results:
-        if score == "ll":
+    for game_pair in game_pair_results:
+        if game_pair == "ll":
             category[0] += 1
-        if score == "ld" or score == "dl":
+        if game_pair in ["ld", "dl"]:
             category[1] += 1
-        if score == "dd" or score == "wl" or score == "lw":
+        if game_pair in ["dd", "wl", "lw"]:
             category[2] += 1
-        if score == "wd" or score == "dw":
+        if game_pair in ["wd", "dw"]:
             category[3] += 1
-        if score == "ww":
+        if game_pair == "ww":
             category[4] += 1
     return category
 
