@@ -39,15 +39,15 @@ def pentanomial_results(result_sequence):
     category = [0, 0, 0, 0, 0]
     for score in game_pair_results:
         if score == "ll":
-            category[0] = category[0] + 1
+            category[0] += 1
         if score == "ld" or score == "dl":
-            category[1] = category[1] + 1
+            category[1] += 1
         if score == "dd" or score == "wl" or score == "lw":
-            category[2] = category[2] + 1
+            category[2] += 1
         if score == "wd" or score == "dw":
-            category[3] = category[3] + 1
+            category[3] += 1
         if score == "ww":
-            category[4] = category[4] + 1
+            category[4] += 1
     return category
 
 
