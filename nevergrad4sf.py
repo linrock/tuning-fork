@@ -146,6 +146,9 @@ def ng4sf(
         Path(output_dir).mkdir(parents=True, exist_ok=True)
     restartFileName = "ng_restart.pkl"
     restart_file_path = Path(output_dir, restartFileName)
+    all_evalpoints_file_path = Path(output_dir, "all_evalpoints.json")
+    all_optimals_file_path = Path(output_dir, "all_optimals.json")
+    last_optimal_file_path = Path(output_dir, "optimal.json")
 
     # Create a dictionary describing to nevergrad the variables of our black box function
     variables = {}
@@ -266,7 +269,7 @@ def ng4sf(
             'num_games': num_games_played,
             'stats': stats
         })
-        with open("all_evalpoints.json", "w") as outfile:
+        with open(all_evalpoints_file_path, "w") as outfile:
             json.dump(all_evalpoints, outfile)
 
         recommendation = var2int(**optimizer.provide_recommendation().kwargs)
@@ -294,9 +297,9 @@ def ng4sf(
                 "evals_done": evals_done,
                 "recommendation": recommendation
             })
-            with open("all_optimals.json", "w") as outfile:
-                json.dump(all_optimals, outfile)
-            with open("optimal.json", "w") as outfile:
+            with open(all_optimals_file_path, "w") as outfile:
+                json.dump(all_optimals_file_path, outfile)
+            with open(last_optimal_file_path, "w") as outfile:
                 json.dump(recommendation, outfile)
 
             # increase the games per batch after each iteration beyond the first one
