@@ -1,6 +1,6 @@
 FROM ubuntu:20.04
 
-RUN apt update --fix-missing
+RUN apt-get update --fix-missing
 RUN DEBIAN_FRONTEND=noninteractive TZ=Etc/UTC \
   apt install -y vim git tig wget curl unzip jq python3 python3-pip mpich
 

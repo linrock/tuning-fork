@@ -263,7 +263,6 @@ def ng4sf(
 
         recommendation = var2int(**optimizer.provide_recommendation().kwargs)
         if recommendation != previous_recommendation:
-            eval_of_last_ng_iter = evals_done
             ng_iter = ng_iter + 1
 
             print()
@@ -280,6 +279,7 @@ def ng4sf(
             print('-----')
             print()
             print(f"Spent {evals_done - eval_of_last_ng_iter} evaluations for this ng iteration")
+            eval_of_last_ng_iter = evals_done
 
             # export optimal recommendations data to json files
             all_optimals.append({
@@ -291,9 +291,8 @@ def ng4sf(
             with open("optimal.json", "w") as outfile:
                 json.dump(recommendation, outfile)
 
-
             # increase the games per batch after each iteration beyond the first one
-            if ng_iter > 1:
+            if ng_iter > 1 and batch_increase_per_iter > 0:
                 games_per_batch += batch_increase_per_iter
                 print(f'Increased games per batch by {batch_increase_per_iter} to: {games_per_batch}')
                 batch = CutechessExecutorBatch(
