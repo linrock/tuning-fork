@@ -277,17 +277,9 @@ def ng4sf(
         recommendation = var2int(**optimizer.provide_recommendation().kwargs)
         if recommendation != previous_recommendation:
             ng_iter = ng_iter + 1
-
+            eval_str = "evaluation" if evals_done == 1 else "evaluations"
             print()
-            print(
-                "------ optimal at iter %d after %d %s and %d games : "
-                % (
-                    ng_iter,
-                    evals_done,
-                    "evaluation" if evals_done == 1 else "evaluations",
-                    total_games_played,
-                )
-            )
+            print(f"----- optimal at iter {ng_iter} after {evals_done} {eval_str} and {total_games_played} games : ")
             pprint(recommendation)
             print('-----')
             print()
@@ -304,7 +296,7 @@ def ng4sf(
             with open(last_optimal_file_path, "w") as outfile:
                 json.dump(recommendation, outfile)
 
-            # increase the games per batch after each iteration beyond the first one
+            # increase the games per batch after each iteration beyond the first
             if ng_iter > 1 and batch_increase_per_iter > 0:
                 games_per_batch += batch_increase_per_iter
                 print(f'Increasing games per batch by {batch_increase_per_iter} to: {games_per_batch}')
