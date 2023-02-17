@@ -86,9 +86,7 @@ def ng4sf(
     size = MPI.COMM_WORLD.Get_size()
     print()
     if size > 1:
-        print(
-            "Launched ... with %d mpi ranks (1 master, %d workers)." % (size, size - 1)
-        )
+        print(f"Launched ... with {size} mpi ranks (1 master, {size - 1} workers).")
         print(flush=True)
     else:
         sys.stderr.write("ng4sf needs to run under mpi with at least 2 MPI ranks.\n")
@@ -272,7 +270,7 @@ def ng4sf(
             'stats': stats
         })
         with open(all_evalpoints_file_path, "w") as outfile:
-            json.dump(all_evalpoints, outfile)
+            json.dump(all_evalpoints, outfile, indent=2)
 
         recommendation = var2int(**optimizer.provide_recommendation().kwargs)
         if recommendation != previous_recommendation:
@@ -292,9 +290,9 @@ def ng4sf(
                 "recommendation": recommendation
             })
             with open(all_optimals_file_path, "w") as outfile:
-                json.dump(all_optimals_file_path, outfile)
+                json.dump(all_optimals_file_path, outfile, indent=2)
             with open(last_optimal_file_path, "w") as outfile:
-                json.dump(recommendation, outfile)
+                json.dump(recommendation, outfile, indent=2)
 
             # increase the games per batch after each iteration beyond the first
             if ng_iter > 1 and batch_increase_per_iter > 0:
