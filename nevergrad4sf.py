@@ -277,9 +277,8 @@ def ng4sf(
             ng_iter = ng_iter + 1
             eval_str = "evaluation" if evals_done == 1 else "evaluations"
             print()
-            print(f"----- optimal at iter {ng_iter} after {evals_done} {eval_str} and {total_games_played} games : ")
+            print(f"------- optimal at iter {ng_iter} after {evals_done} {eval_str} and {total_games_played} games : ")
             pprint(recommendation)
-            print('-----')
             print()
             print(f"Spent {evals_done - eval_of_last_ng_iter} evaluations for this ng iteration")
             eval_of_last_ng_iter = evals_done
@@ -299,6 +298,8 @@ def ng4sf(
                 games_per_batch += batch_increase_per_iter
                 print(f'Increasing games per batch by {batch_increase_per_iter} to: {games_per_batch}')
                 batch = create_cutechess_executor_batch(games_per_batch)
+
+            print('-------')
 
         # queue the next point for evaluation.
         if evalpoints_submitted < nevergrad_evals:
