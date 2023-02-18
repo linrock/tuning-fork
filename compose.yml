@@ -7,3 +7,6 @@ services:
     image: tuning-fork
     volumes:
       - /dev/shm:/dev/shm
+    ports:
+      - 65022:65022
+      - 60000-60100:60000-60100
