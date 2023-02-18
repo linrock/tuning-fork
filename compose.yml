@@ -7,8 +7,8 @@ services:
     image: tuning-fork
     volumes:
       - /dev/shm:/dev/shm
-    environment:
-      - MPICH_PORT_RANGE=60000:60100
-    ports:
-      - 60000-60100:60000-60100
-      - 65022:65022
+    # environment:
+    #   - MPICH_PORT_RANGE=60000:60100
+    # ports:
+    #   - 60000-60100:60000-60100
+    #   - 65022:65022
