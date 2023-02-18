@@ -145,10 +145,10 @@ def ng4sf(
     # paths for experiment output files
     if output_dir:
         Path(output_dir).mkdir(parents=True, exist_ok=True)
-    restart_file_path = Path(output_dir, "ng_restart.pkl")
-    all_evalpoints_file_path = Path(output_dir, "all_evalpoints.json")
-    all_optimals_file_path = Path(output_dir, "all_optimals.json")
-    last_optimal_file_path = Path(output_dir, "optimal.json")
+    restart_file_path = str(Path(output_dir, "ng_restart.pkl"))
+    all_evalpoints_file_path = str(Path(output_dir, "all_evalpoints.json"))
+    all_optimals_file_path = str(Path(output_dir, "all_optimals.json"))
+    last_optimal_file_path = str(Path(output_dir, "optimal.json"))
 
     # Create a dictionary describing to nevergrad the variables of our black box function
     variables = {}
@@ -260,7 +260,7 @@ def ng4sf(
 
         # make a backup of the old restart and dump current state
         if os.path.exists(restart_file_path):
-            shutil.move(restart_file_path, restart_file_path + ".bak")
+            shutil.move(restart_file_path, f"{restart_file_path}.bak")
         optimizer.dump(restart_file_path)
 
         # export data to json files after each evaluation
