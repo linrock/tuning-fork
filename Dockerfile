@@ -33,4 +33,10 @@ COPY *.py *.sh .
 COPY stats stats
 RUN chmod +x *.sh
 
+# if ssh keys are present, set up ssh for mpi workers
+RUN mkdir /root/.ssh
+COPY id_ed25519* /root/.ssh/
+COPY id_ed25519.pu* /root/.ssh/authorized_keys
+RUN chmod 600 /root/.ssh/*
+
 CMD sleep infinity
