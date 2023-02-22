@@ -20,10 +20,7 @@ RUN echo 'source ~/.bash_profile' >> .bashrc
 COPY requirements.txt .
 RUN pip3 install -r requirements.txt
 
-RUN git clone https://github.com/linrock/Stockfish.git /root/stockfish
-WORKDIR /root/stockfish
-RUN git fetch origin
-RUN git checkout -t origin/spsa-nnue-scale-5p
+RUN git clone https://github.com/official-stockfish/Stockfish.git /root/stockfish
 WORKDIR /root/stockfish/src
 RUN make -j profile-build ARCH=x86-64-bmi2
 RUN ln -s /root/stockfish/src/stockfish /usr/local/bin/
