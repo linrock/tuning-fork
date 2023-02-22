@@ -29,6 +29,7 @@ WORKDIR /root
 COPY *.py *.sh .
 COPY stats stats
 RUN chmod +x *.sh
+RUN mkdir experiments
 
 # if ssh keys are present, set up ssh for mpi workers
 # RUN mkdir /root/.ssh
