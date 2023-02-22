@@ -1,6 +1,6 @@
 ## Tuning fork
 
-Linux container for tuning stockfish params with [nevergrad](https://github.com/facebookresearch/nevergrad) TBPSA via a modified version of [nevergrad4sf](https://github.com/vondele/nevergrad4sf). The objective function uses SPRT LLR calculated from pentanomial game results. This appears to reduce the compute needed to converge on good parameters during optimization.
+Linux container for tuning stockfish params with a modified [nevergrad4sf](https://github.com/vondele/nevergrad4sf). The objective function was updated to use SPRT LLR calculated from pentanomial game results. This appears to reduce the compute needed to converge on good parameters during TBPSA optimization.
 
 
 ### Usage
@@ -16,6 +16,6 @@ docker exec -it tuning-fork bash
 
 ### Resources
 
-https://github.com/vondele/nevergrad4sf
-https://github.com/facebookresearch/nevergrad
-https://github.com/glinscott/fishtest/tree/master/server/fishtest/stats
+* https://github.com/vondele/nevergrad4sf
+* https://github.com/facebookresearch/nevergrad
+* https://github.com/glinscott/fishtest/tree/master/server/fishtest/stats
