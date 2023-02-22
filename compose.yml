@@ -8,7 +8,7 @@ services:
     volumes:
       - /dev/shm:/dev/shm
     # environment:
-    #   - MPICH_PORT_RANGE=60000:60100
+    #   - MPICH_PORT_RANGE=2000:2100
     # ports:
-    #   - 60000-60100:60000-60100
-    #   - 65022:65022
+    #   - 2000-2100:2000-2100
+    #   - 2222:2222

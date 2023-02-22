@@ -11,7 +11,7 @@ while read -r line; do
     echo $server_name not in ssh config. Adding config entry.
     echo "Host $server_name" >> $SSH_CONFIG
     echo "  HostName $server_ip" >> $SSH_CONFIG
-    echo "  Port 65022" >> $SSH_CONFIG
+    echo "  Port 2222" >> $SSH_CONFIG
     echo >> $SSH_CONFIG
   fi
   echo $server_name
